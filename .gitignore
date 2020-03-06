@@ -1,6 +1,6 @@
-application.yml
+/application.yml
 .idea/
-aqts-capture-ts-loader.iml
-.env
+/aqts-capture-ts-loader.iml
+/.env
 .settings/
 target/
