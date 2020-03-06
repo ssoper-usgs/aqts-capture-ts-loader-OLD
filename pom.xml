@@ -249,7 +249,7 @@
                                     <name>${AQTS_TESTING_DATABASE_NETWORK}</name>
                                 </network>
                                 <ports>
-                                    <port>${AQTS_TESTING_DATABASE_PORT}:5432</port>
+                                    <port>${AQTS_TESTING_DATABASE_PORT}</port>
                                 </ports>
                                 <wait>
                                     <time>150000</time>
@@ -267,7 +267,7 @@
                                     <name>${AQTS_TESTING_DATABASE_NETWORK}</name>
                                 </network>
                                 <ports>
-                                    <port>${OBSERVATION_TESTING_DATABASE_PORT}:5432</port>
+                                    <port>${OBSERVATION_TESTING_DATABASE_PORT}</port>
                                 </ports>
                                 <wait>
                                     <time>150000</time>
