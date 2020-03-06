@@ -20,9 +20,12 @@ script:
     -v "$TRAVIS_BUILD_DIR":/usr/src/mymaven \
     -w /usr/src/mymaven \
     --network=aqtsNet \
-    -e TESTING_DATABASE_PORT=5432 \
-    -e TESTING_DATABASE_ADDRESS=aqtsDb \
-    -e TESTING_DATABASE_NETWORK=aqtsNet \
+    -e AQTS_TESTING_DATABASE_PORT=5432 \
+    -e AQTS_TESTING_DATABASE_ADDRESS=aqtsDb \
+    -e AQTS_TESTING_DATABASE_NETWORK=aqtsNet \
+    -e OBSERVATION_TESTING_DATABASE_PORT=5432 \
+    -e OBSERVATION_TESTING_DATABASE_ADDRESS=wqpDb \
+    -e OBSERVATION_TESTING_DATABASE_NETWORK=aqtsNet \
     maven:3.6.0-jdk-11 mvn clean verify \
   - docker network rm aqtsNet
 

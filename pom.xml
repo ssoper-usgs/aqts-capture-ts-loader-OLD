@@ -198,6 +198,12 @@
                         <AQTS_SCHEMA_NAME>schema_name</AQTS_SCHEMA_NAME>
                         <AQTS_SCHEMA_OWNER_USERNAME>schema_owner</AQTS_SCHEMA_OWNER_USERNAME>
                         <AQTS_SCHEMA_OWNER_PASSWORD>changeMe</AQTS_SCHEMA_OWNER_PASSWORD>
+                        <OBSERVATION_DATABASE_ADDRESS>${TESTING_DATABASE_ADDRESS}</OBSERVATION_DATABASE_ADDRESS>
+                        <OBSERVATION_DATABASE_PORT>${TESTING_DATABASE_PORT}</OBSERVATION_DATABASE_PORT>
+                        <OBSERVATION_DATABASE_NAME>database_name</OBSERVATION_DATABASE_NAME>
+                        <OBSERVATION_SCHEMA_NAME>schema_name</OBSERVATION_SCHEMA_NAME>
+                        <OBSERVATION_SCHEMA_OWNER_USERNAME>schema_owner</OBSERVATION_SCHEMA_OWNER_USERNAME>
+                        <OBSERVATION_SCHEMA_OWNER_PASSWORD>changeMe</OBSERVATION_SCHEMA_OWNER_PASSWORD>
                     </environmentVariables>
                 </configuration>
                 <executions>
@@ -233,16 +239,35 @@
                     <!--                     <showLogs>true</showLogs> -->
                     <containerNamePattern>%a</containerNamePattern>
                     <images>
+                        <!-- Transform db image -->
                         <image>
                             <name>usgswma/aqts_capture_db:ci</name>
-                            <alias>${TESTING_DATABASE_ADDRESS}</alias>
+                            <alias>${AQTS_TESTING_DATABASE_ADDRESS}</alias>
                             <run>
                                 <network>
                                     <mode>custom</mode>
-                                    <name>${TESTING_DATABASE_NETWORK}</name>
+                                    <name>${AQTS_TESTING_DATABASE_NETWORK}</name>
                                 </network>
                                 <ports>
-                                    <port>${TESTING_DATABASE_PORT}:5432</port>
+                                    <port>${AQTS_TESTING_DATABASE_PORT}:5432</port>
+                                </ports>
+                                <wait>
+                                    <time>150000</time>
+                                    <log>(?s)PostgreSQL init process complete; ready for start up.*database system is ready to accept connections</log>
+                                </wait>
+                            </run>
+                        </image>
+                        <!-- Observation db image -->
+                        <image>
+                            <name>usgswma/wqp_db:etl</name>
+                            <alias>${OBSERVATION_TESTING_DATABASE_ADDRESS}</alias>
+                            <run>
+                                <network>
+                                    <mode>custom</mode>
+                                    <name>${AQTS_TESTING_DATABASE_NETWORK}</name>
+                                </network>
+                                <ports>
+                                    <port>${OBSERVATION_TESTING_DATABASE_PORT}:5432</port>
                                 </ports>
                                 <wait>
                                     <time>150000</time>
