@@ -192,12 +192,12 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
                     <environmentVariables>
-                        <AQTS_DATABASE_ADDRESS>${TESTING_DATABASE_ADDRESS}</AQTS_DATABASE_ADDRESS>
-                        <AQTS_DATABASE_PORT>${TESTING_DATABASE_PORT}</AQTS_DATABASE_PORT>
-                        <AQTS_DATABASE_NAME>database_name</AQTS_DATABASE_NAME>
-                        <AQTS_SCHEMA_NAME>schema_name</AQTS_SCHEMA_NAME>
-                        <AQTS_SCHEMA_OWNER_USERNAME>schema_owner</AQTS_SCHEMA_OWNER_USERNAME>
-                        <AQTS_SCHEMA_OWNER_PASSWORD>changeMe</AQTS_SCHEMA_OWNER_PASSWORD>
+                        <TRANSFORM_DATABASE_ADDRESS>${TESTING_DATABASE_ADDRESS}</TRANSFORM_DATABASE_ADDRESS>
+                        <TRANSFORM_DATABASE_PORT>${TESTING_DATABASE_PORT}</TRANSFORM_DATABASE_PORT>
+                        <TRANSFORM_DATABASE_NAME>database_name</TRANSFORM_DATABASE_NAME>
+                        <TRANSFORM_SCHEMA_NAME>schema_name</TRANSFORM_SCHEMA_NAME>
+                        <TRANSFORM_SCHEMA_OWNER_USERNAME>schema_owner</TRANSFORM_SCHEMA_OWNER_USERNAME>
+                        <TRANSFORM_SCHEMA_OWNER_PASSWORD>changeMe</TRANSFORM_SCHEMA_OWNER_PASSWORD>
                         <OBSERVATION_DATABASE_ADDRESS>${TESTING_DATABASE_ADDRESS}</OBSERVATION_DATABASE_ADDRESS>
                         <OBSERVATION_DATABASE_PORT>${TESTING_DATABASE_PORT}</OBSERVATION_DATABASE_PORT>
                         <OBSERVATION_DATABASE_NAME>database_name</OBSERVATION_DATABASE_NAME>

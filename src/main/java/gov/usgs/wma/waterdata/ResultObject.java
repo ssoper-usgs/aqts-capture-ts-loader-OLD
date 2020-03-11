@@ -6,6 +6,10 @@ public class ResultObject {
 	// Could probably just use the RequestObject for this?
 	private String uniqueId;
 
+	// look to dvstat repo to see counts, basically verifying the number of records grabbed vs number inserted
+	private String status;
+
+
 	public String getUniqueId() {
 		return uniqueId;
 	}

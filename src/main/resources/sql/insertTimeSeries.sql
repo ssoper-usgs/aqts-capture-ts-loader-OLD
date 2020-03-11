@@ -5,8 +5,8 @@ insert into
 	,time_series_unique_id
 	,montitoring_location_id
 	,monitoring_location_identifier
-	,observed_property_id
-	,observed_property_name
+	,observed_property_id -- parm_cd in parm table
+	,observed_property_name -- parm_nm in parm table
 	,observed_property_reference
 	,statistic_id
 	,statistic

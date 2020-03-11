@@ -2,7 +2,7 @@ select
     groundwater_daily_value_identifier,
     time_series_unique_id,
     monitoring_location_identifier,
-    observed_property_id,
+    observered_property_id, -- TODO need to update aqts-capture-db schema to 'observed' rather than 'observered'
     statistic_id,
     time_step,
     unit_of_measure,

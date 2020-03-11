@@ -8,17 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LoadGwDvTimeSeries implements Function<RequestObject, ResultObject> {
+public class LoadTimeSeries implements Function<RequestObject, ResultObject> {
 
-	private static final Logger LOG = LoggerFactory.getLogger(LoadGwDvTimeSeries.class);
+	private static final Logger LOG = LoggerFactory.getLogger(LoadTimeSeries.class);
 
-	private GroundwaterStatisticalDvDao gwStatDvDao;
-	private GroundwaterDvDao gwDvDao;
+	private TransformDao transformDao;
+	private ObservationDao observationDao;
 
 	@Autowired
-	public LoadGwDvTimeSeries(GroundwaterStatisticalDvDao gwStatDvDao, GroundwaterDvDao gwDvDao) {
-		this.gwStatDvDao = gwStatDvDao;
-		this.gwDvDao = gwDvDao;
+	public LoadTimeSeries(TransformDao transformDao, ObservationDao observationDao) {
+		this.transformDao = transformDao;
+		this.observationDao = observationDao;
 	}
 
 	@Override

@@ -12,10 +12,12 @@ import org.springframework.context.annotation.Primary;
 
 import com.github.springtestdbunit.bean.DatabaseConfigBean;
 import com.github.springtestdbunit.bean.DatabaseDataSourceConnectionFactoryBean;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 @TestConfiguration
 public class DBTestConfig {
 
+	// Transform DB connection
 	@Bean
 	@Primary
 	@ConfigurationProperties(prefix="spring.datasource-transform")
@@ -31,6 +33,13 @@ public class DBTestConfig {
 	}
 
 	@Bean
+	@Primary
+	public JdbcTemplate jdbcTemplateTransform() {
+		return new JdbcTemplate(dataSourceTransform());
+	}
+
+	// Observation DB connection
+	@Bean
 	@ConfigurationProperties(prefix="spring.datasource-observation")
 	public DataSourceProperties dataSourcePropertiesObservation() {
 		return new DataSourceProperties();
@@ -43,6 +52,12 @@ public class DBTestConfig {
 	}
 
 	@Bean
+	public JdbcTemplate jdbcTemplateObservation() {
+		return new JdbcTemplate(dataSourceObservation());
+	}
+
+	//
+	@Bean
 	public DatabaseConfigBean dbUnitDatabaseConfig() {
 		DatabaseConfigBean dbUnitDbConfig = new DatabaseConfigBean();
 		dbUnitDbConfig.setDatatypeFactory(new TSDataTypeFactory());
@@ -50,7 +65,7 @@ public class DBTestConfig {
 	}
 
 	@Bean
-	public DatabaseDataSourceConnectionFactoryBean wqp() throws SQLException {
+	public DatabaseDataSourceConnectionFactoryBean transform() throws SQLException {
 		DatabaseDataSourceConnectionFactoryBean dbUnitDatabaseConnection = new DatabaseDataSourceConnectionFactoryBean();
 		dbUnitDatabaseConnection.setDatabaseConfig(dbUnitDatabaseConfig());
 		dbUnitDatabaseConnection.setDataSource(dataSourceTransform());

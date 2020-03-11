@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.util.Map;
 
 @Component
-public class GroundwaterStatisticalDvDao {
-	private static final Logger LOG = LoggerFactory.getLogger(GroundwaterStatisticalDvDao.class);
+public class TransformDao {
+	private static final Logger LOG = LoggerFactory.getLogger(TransformDao.class);
 
 	@Autowired
 	@Qualifier("jdbcTemplateTransform")

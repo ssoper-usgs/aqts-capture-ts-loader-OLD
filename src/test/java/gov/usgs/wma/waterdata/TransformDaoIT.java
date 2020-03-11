@@ -1,11 +1,7 @@
 package gov.usgs.wma.waterdata;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
@@ -27,11 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.springtestdbunit.TransactionDbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DbUnitConfiguration;
-import com.github.springtestdbunit.annotation.ExpectedDatabase;
-import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
+
 
 @SpringBootTest(webEnvironment=WebEnvironment.NONE,
-		classes={DBTestConfig.class, GroundwaterStatisticalDvDao.class})
+		classes={DBTestConfig.class, TransformDao.class})
 @DatabaseSetup("classpath:/testData/transformDb/groundwaterStatisticalDailyValue/")
 
 @ActiveProfiles("it")
@@ -39,15 +34,18 @@ import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 		DirtiesContextTestExecutionListener.class,
 		TransactionalTestExecutionListener.class,
 		TransactionDbUnitTestExecutionListener.class })
-@DbUnitConfiguration(dataSetLoader=FileSensingDataSetLoader.class)
+@DbUnitConfiguration(
+		dataSetLoader=FileSensingDataSetLoader.class,
+		databaseConnection={"transform"}
+)
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 @Transactional(propagation=Propagation.NOT_SUPPORTED)
 @Import({DBTestConfig.class})
 @DirtiesContext
-public class GroundwaterStatisticalDvDaoIT {
+public class TransformDaoIT {
 
 	@Autowired
-	private GroundwaterStatisticalDvDao gwDvdDao;
+	private TransformDao transformDao;
 	private RequestObject timeSeriesUniqueId = new RequestObject();
 
 	@Test
@@ -55,7 +53,7 @@ public class GroundwaterStatisticalDvDaoIT {
 
 		// get new data, return unique ids
 		timeSeriesUniqueId.setUniqueId("someTimeSeriesUniqueIdFromTestData");
-		Map<String, Object> actualData = gwDvdDao.getTimeSeries(timeSeriesUniqueId.getUniqueId());
+		Map<String, Object> actualData = transformDao.getTimeSeries(timeSeriesUniqueId.getUniqueId());
 		assertNotNull(actualData);
 		System.out.println(actualData);
 	}
