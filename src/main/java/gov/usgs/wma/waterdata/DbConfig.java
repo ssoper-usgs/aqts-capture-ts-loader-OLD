@@ -14,7 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class DbConfig {
 
 	@Bean
-	@ConfigurationProperties(prefix="spring.datasource.transform")
+	@ConfigurationProperties(prefix="spring.datasource-transform")
 	@Primary
 	@Profile("default")
 	public DataSourceProperties dataSourcePropertiesTransform() {
@@ -35,7 +35,7 @@ public class DbConfig {
 	}
 
 	@Bean
-	@ConfigurationProperties(prefix="spring.datasource.observation")
+	@ConfigurationProperties(prefix="spring.datasource-observation")
 	public DataSourceProperties dataSourceObservationProperties() {
 		return new DataSourceProperties();
 	}
