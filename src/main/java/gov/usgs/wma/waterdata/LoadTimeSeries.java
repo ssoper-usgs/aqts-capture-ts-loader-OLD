@@ -1,5 +1,6 @@
 package gov.usgs.wma.waterdata;
 
+import java.util.List;
 import java.util.function.Function;
 
 import org.slf4j.Logger;
@@ -33,10 +34,14 @@ public class LoadTimeSeries implements Function<RequestObject, ResultObject> {
 
 		if (null != timeSeriesUniqueId) {
 			// 1. select the time series from the transform db
+			List<TimeSeries> timeSeries = transformDao.getTimeSeries(timeSeriesUniqueId);
 			// in the same transaction:
 			// 2. delete the time series in the observation db
 			// 3. insert the time series in the observation db
-
+			for (TimeSeries ts : timeSeries) {
+				observationDao.deleteTimeSeries(timeSeriesUniqueId);
+				observationDao.insertTimeSeries(ts);
+			}
 			LOG.debug("Successfully inserted time series with unique id: {} ", result.getUniqueId());
 		}
 		return result;

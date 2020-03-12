@@ -1,12 +1,22 @@
 package gov.usgs.wma.waterdata;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
@@ -25,14 +35,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.springtestdbunit.TransactionDbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DbUnitConfiguration;
+import org.springframework.util.LinkedCaseInsensitiveMap;
 
 
 @SpringBootTest(webEnvironment=WebEnvironment.NONE,
-		classes={
-			DBTestConfig.class,
-			ObservationDao.class,
-			TransformDao.class})
-@DatabaseSetup("classpath:/testData/transformDb/groundwaterStatisticalDailyValue/")
+		classes={DBTestConfig.class, TransformDao.class, ObservationDao.class})
+//@DatabaseSetup("classpath:/testData/transformDb/groundwaterStatisticalDailyValue/")
 
 @ActiveProfiles("it")
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
@@ -41,38 +49,53 @@ import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 		TransactionDbUnitTestExecutionListener.class })
 @DbUnitConfiguration(
 		dataSetLoader=FileSensingDataSetLoader.class,
-		databaseConnection={"observation", "transform"}
+		databaseConnection={"transform", "observation"}
 )
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 @Transactional(propagation=Propagation.NOT_SUPPORTED)
 @Import({DBTestConfig.class})
 @DirtiesContext
-public class ObservationDaoIT {
+public class EndToEndDaoIT {
 
 	@Autowired
-	private ObservationDao observationDao;
+	public TransformDao transformDao;
 
 	@Autowired
-	private TransformDao transformDao;
-	private RequestObject timeSeriesUniqueId = new RequestObject();
+	public ObservationDao observationDao;
 
-	@Test
-	public void testInsert() {
+	public RequestObject request;
+	public static final String tsUniqueId = "17f83e62b06e4dc29e78d96b4426a255";
 
-		// get new data, return unique ids
-		timeSeriesUniqueId.setUniqueId("someTimeSeriesUniqueIdFromTestData");
-		List<TimeSeries> actualData = transformDao.getTimeSeries(timeSeriesUniqueId.getUniqueId());
-		assertNotNull(actualData);
-		System.out.println(actualData);
+	@BeforeEach
+	public void setup() {
+		request = new RequestObject();
+		request.setUniqueId(tsUniqueId);
 	}
 
+	// TODO this is failing, password auth fails for user "schema_owner"
 	@Test
-	public void testDelete() {
+	@DatabaseSetup(
+			connection="transform",
+			value="classpath:/testData/transformDb/groundwaterStatisticalDailyValue/")
+	@DatabaseSetup(
+			connection="observation",
+			value="classpath:/testResult/observationDb/groundwaterDailyValue/empty/")
+	@ExpectedDatabase(
+			value="classpath:/testResult/observationDb/groundwaterDailyValue/afterInsert/",
+			assertionMode= DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			connection="observation")
+	public void testEndToEnd() {
 
-		// get new data, return unique ids
-		timeSeriesUniqueId.setUniqueId("someTimeSeriesUniqueIdFromTestData");
-		List<TimeSeries> actualData = transformDao.getTimeSeries(timeSeriesUniqueId.getUniqueId());
-		assertNotNull(actualData);
-		System.out.println(actualData);
+		// get data
+		List<TimeSeries> getData = transformDao.getTimeSeries(request.getUniqueId());
+		assertNotNull(getData);
+
+		// delete and insert data
+		for (TimeSeries ts : getData) {
+			observationDao.deleteTimeSeries(ts.getTimeSeriesUniqueId());
+			observationDao.insertTimeSeries(ts);
+		}
 	}
+
+
 }

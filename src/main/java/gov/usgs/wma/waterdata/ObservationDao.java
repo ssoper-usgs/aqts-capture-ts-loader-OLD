@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
-import java.util.Map;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 @Component
 public class ObservationDao {
@@ -28,11 +30,10 @@ public class ObservationDao {
 	@Value("classpath:sql/insertTimeSeries.sql")
 	protected Resource insertQuery;
 
-	public Map<String, Object> deleteTimeSeries(String timeSeriesUniqueId) {
-		Map<String, Object> rtn = null;
+	public void deleteTimeSeries(String timeSeriesUniqueId) {
 		try {
 			String sql = new String(FileCopyUtils.copyToByteArray(deleteQuery.getInputStream()));
-			rtn = jdbcTemplate.queryForMap(
+			jdbcTemplate.update(
 					sql,
 					timeSeriesUniqueId
 			);
@@ -42,27 +43,37 @@ public class ObservationDao {
 			LOG.error("Unable to get SQL statement", e);
 			throw new RuntimeException(e);
 		}
-
-		// Maybe we'll want to know what was deleted?
-		return rtn;
 	}
 
-	public Map<String, Object> insertTimeSeries(String timeSeriesUniqueId) {
-		Map<String, Object> rtn = null;
+
+	public void insertTimeSeries(TimeSeries timeSeries) {
 		try {
 			String sql = new String(FileCopyUtils.copyToByteArray(insertQuery.getInputStream()));
-			rtn = jdbcTemplate.queryForMap(
+			jdbcTemplate.update(
 					sql,
-					timeSeriesUniqueId
+					new PreparedStatementSetter() {
+						@Override
+						public void setValues(PreparedStatement ps) throws SQLException {
+							int pos = 1;
+							ps.setString(pos++, timeSeries.getGroundwaterDailyValueIdentifier());
+							ps.setString(pos++, timeSeries.getTimeSeriesUniqueId());
+							ps.setString(pos++, timeSeries.getMonitoringLocationIdentifier());
+							ps.setString(pos++, timeSeries.getObservedPropertyId());
+							ps.setString(pos++, timeSeries.getStatisticId());
+							ps.setDate(pos++, timeSeries.getTimeStep());
+							ps.setString(pos++, timeSeries.getUnitOfMeasure());
+							ps.setString(pos++, timeSeries.getResult());
+							ps.setObject(pos++, timeSeries.getApprovals());
+							ps.setObject(pos++, timeSeries.getQualifiers());
+							ps.setObject(pos++, timeSeries.getGrades());
+						}
+					}
 			);
 		} catch (EmptyResultDataAccessException e) {
-			LOG.info("Couldn't find {} - {} ", timeSeriesUniqueId, e.getLocalizedMessage());
+			LOG.info("Couldn't find {} - {} ", timeSeries.getTimeSeriesUniqueId(), e.getLocalizedMessage());
 		} catch (IOException e) {
 			LOG.error("Unable to get SQL statement", e);
 			throw new RuntimeException(e);
 		}
-
-		// Maybe we'll want to know what was inserted?
-		return rtn;
 	}
 }

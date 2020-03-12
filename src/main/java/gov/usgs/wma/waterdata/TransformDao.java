@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class TransformDao {
@@ -26,12 +26,13 @@ public class TransformDao {
 	@Value("classpath:sql/getTimeSeries.sql")
 	protected Resource selectQuery;
 
-	public List<Map<String, Object>> getTimeSeries(String timeSeriesUniqueId) {
-		List<Map<String, Object>> rtn = null;
+	public List<TimeSeries> getTimeSeries(String timeSeriesUniqueId) {
+		List<TimeSeries> rtn = Arrays.asList();
 		try {
 			String sql = new String(FileCopyUtils.copyToByteArray(selectQuery.getInputStream()));
-			rtn = jdbcTemplate.queryForList(
+			rtn = jdbcTemplate.query(
 					sql,
+					new TimeSeriesRowMapper(),
 					timeSeriesUniqueId
 			);
 		} catch (EmptyResultDataAccessException e) {

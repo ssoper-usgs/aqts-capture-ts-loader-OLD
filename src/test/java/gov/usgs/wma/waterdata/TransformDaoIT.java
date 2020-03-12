@@ -6,6 +6,7 @@ import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInA
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
@@ -31,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.springtestdbunit.TransactionDbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DbUnitConfiguration;
+import org.springframework.util.LinkedCaseInsensitiveMap;
 
 
 @SpringBootTest(webEnvironment=WebEnvironment.NONE,
@@ -56,65 +59,77 @@ public class TransformDaoIT {
 	public TransformDao transformDao;
 
 	public RequestObject request;
-	List<Map<String, Object>> timeSeriesList;
+	List<TimeSeries> timeSeriesList;
 	public static final String tsUniqueId = "17f83e62b06e4dc29e78d96b4426a255";
 
 	@BeforeEach
 	public void setup() {
 		request = new RequestObject();
 		request.setUniqueId(tsUniqueId);
-
-		Map<String, Object> timeSeries1;
+		PGobject approvals;
 		{
-			timeSeries1 = new HashMap<>();
-			timeSeries1.put("groundwater_daily_value_identifier", "USGS-132624144452771-17f83e62b06e4dc29e78d96b4426a255");
-			timeSeries1.put("time_series_unique_id", "17f83e62b06e4dc29e78d96b4426a255");
-			timeSeries1.put("monitoring_location_identifier", "USGS-132624144452771");
-			timeSeries1.put("observered_property_id", null);
-			timeSeries1.put("statistic_id", null);
-			timeSeries1.put("time_step", 2008-06-03);
-			timeSeries1.put("unit_of_measure", "ft");
-			timeSeries1.put("result", 36.02);
-			timeSeries1.put("approvals", "Approved");
-			timeSeries1.put("qualifiers", "null");
-			timeSeries1.put("grades", "50");
-
+			approvals = new PGobject();
+			approvals.setType("jsonb");
+//			approvals.setValue("[\"Approved\"]");
 		}
-		Map<String, Object> timeSeries2;
+		PGobject grades;
 		{
-			timeSeries2 = new HashMap<>();
-			timeSeries2.put("groundwater_daily_value_identifier", "USGS-132624144452771-17f83e62b06e4dc29e78d96b4426a255");
-			timeSeries2.put("time_series_unique_id", "17f83e62b06e4dc29e78d96b4426a255");
-			timeSeries2.put("monitoring_location_identifier", "USGS-132624144452771");
-			timeSeries2.put("observered_property_id", null);
-			timeSeries2.put("statistic_id", null);
-			timeSeries2.put("time_step", 2008-06-04);
-			timeSeries2.put("unit_of_measure", "ft");
-			timeSeries2.put("result", 35.96);
-			timeSeries2.put("approvals", "Approved");
-			timeSeries2.put("qualifiers", null);
-			timeSeries2.put("grades", "50");
+			grades = new PGobject();
+			grades.setType("jsonb");
+//			grades.setValue("[\"50\"]");
 		}
-		Map<String, Object> timeSeries3;
+		
+		PGobject qualifiers;
 		{
-			timeSeries3 = new HashMap<>();
-			timeSeries3.put("groundwater_daily_value_identifier", "USGS-132624144452771-17f83e62b06e4dc29e78d96b4426a255");
-			timeSeries3.put("time_series_unique_id", "17f83e62b06e4dc29e78d96b4426a255");
-			timeSeries3.put("monitoring_location_identifier", "USGS-132624144452771");
-			timeSeries3.put("observered_property_id", null);
-			timeSeries3.put("statistic_id", null);
-			timeSeries3.put("time_step", 2008-06-04);
-			timeSeries3.put("unit_of_measure", "ft");
-			timeSeries3.put("result", 35.96);
-			timeSeries3.put("approvals", "Approved");
-			timeSeries3.put("qualifiers", null);
-			timeSeries3.put("grades", "50");
+			qualifiers = new PGobject();
+			qualifiers.setType("jsonb");
+//			qualifiers.setValue("NULL");
 		}
 
-		timeSeriesList = new ArrayList<>();
-		timeSeriesList.add(timeSeries1);
-		timeSeriesList.add(timeSeries2);
-		timeSeriesList.add(timeSeries3);
+//		TimeSeries timeSeries1 = new TimeSeries();
+//		timeSeries1.setGroundwaterDailyValueIdentifier("USGS-132624144452771-17f83e62b06e4dc29e78d96b4426a255");
+//		timeSeries1.setTimeSeriesUniqueId("17f83e62b06e4dc29e78d96b4426a255");
+//		timeSeries1.setMonitoringLocationIdentifier("USGS-132624144452771");
+//		timeSeries1.setObservedPropertyId("62610");
+//		timeSeries1.setStatisticId("00001");
+//		timeSeries1.setTimeStep(Date.parse("2008-06-03"));
+//		timeSeries1.setUnitOfMeasure("ft");
+//		timeSeries1.setResult("36.02");
+//		timeSeries1.setApprovals(approvals);
+//		timeSeries1.setQualifiers(qualifiers);
+//		timeSeries1.setGrades(grades);
+//
+//		TimeSeries timeSeries2 = new TimeSeries();
+//		timeSeries2.setGroundwaterDailyValueIdentifier("USGS-132624144452771-17f83e62b06e4dc29e78d96b4426a255");
+//		timeSeries2.setTimeSeriesUniqueId("17f83e62b06e4dc29e78d96b4426a255");
+//		timeSeries2.setMonitoringLocationIdentifier("USGS-132624144452771");
+//		timeSeries2.setObservedPropertyId("62610");
+//		timeSeries2.setStatisticId("00001");
+//		timeSeries2.setTimeStep(Date.parse("2008-06-04"));
+//		timeSeries2.setUnitOfMeasure("ft");
+//		timeSeries2.setResult("35.96");
+//		timeSeries2.setApprovals(approvals);
+//		timeSeries2.setQualifiers(qualifiers);
+//		timeSeries2.setGrades(grades);
+//
+//		TimeSeries timeSeries3 = new TimeSeries();
+//		timeSeries3.setGroundwaterDailyValueIdentifier("USGS-132624144452771-17f83e62b06e4dc29e78d96b4426a255");
+//		timeSeries3.setTimeSeriesUniqueId("17f83e62b06e4dc29e78d96b4426a255");
+//		timeSeries3.setMonitoringLocationIdentifier("USGS-132624144452771");
+//		timeSeries3.setObservedPropertyId("62610");
+//		timeSeries3.setStatisticId("00001");
+//		timeSeries3.setTimeStep(Date.parse("2008-06-04"));
+//		timeSeries3.setUnitOfMeasure("ft");
+//		timeSeries3.setResult("35.96");
+//		timeSeries3.setApprovals(approvals);
+//		timeSeries3.setQualifiers(qualifiers);
+//		timeSeries3.setGrades(grades);
+//
+//		timeSeriesList = new ArrayList<>();
+//
+//		timeSeriesList.add(timeSeries1);
+//		timeSeriesList.add(timeSeries2);
+//		timeSeriesList.add(timeSeries3);
 	}
 
 	@Test
@@ -122,9 +137,10 @@ public class TransformDaoIT {
 
 		// get new data, return unique ids
 		System.out.println(request.getUniqueId());
-		List<Map<String, Object>> actualData = transformDao.getTimeSeries(request.getUniqueId());
+		List<TimeSeries> actualData = transformDao.getTimeSeries(request.getUniqueId());
 		assertNotNull(actualData);
-		System.out.println(actualData);
-		assertThat(actualData, containsInAnyOrder(timeSeriesList));
+		assertEquals(actualData, timeSeriesList);
 	}
+
+
 }
