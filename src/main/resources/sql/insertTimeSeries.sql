@@ -24,20 +24,20 @@ insert into
 values (
 	?
 	,?
+	,NULL
 	,?
 	,?
+	,NULL
+	,NULL
 	,?
+	,NULL
+	,NULL
 	,?
+	,NULL
 	,?
+	,NULL
 	,?
-	,?
-	,?
-	,?
-	,?
-	,?
-	,?
-	,?
-	,?
+	,NULL
 	,?
 	,?
 	,?

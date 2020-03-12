@@ -27,7 +27,10 @@ import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 
 
 @SpringBootTest(webEnvironment=WebEnvironment.NONE,
-		classes={DBTestConfig.class, TransformDao.class})
+		classes={
+			DBTestConfig.class,
+			ObservationDao.class,
+			TransformDao.class})
 @DatabaseSetup("classpath:/testData/transformDb/groundwaterStatisticalDailyValue/")
 
 @ActiveProfiles("it")
@@ -37,26 +40,37 @@ import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 		TransactionDbUnitTestExecutionListener.class })
 @DbUnitConfiguration(
 		dataSetLoader=FileSensingDataSetLoader.class,
-		databaseConnection={"transform"}
+		databaseConnection={"observation", "transform"}
 )
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 @Transactional(propagation=Propagation.NOT_SUPPORTED)
 @Import({DBTestConfig.class})
 @DirtiesContext
-public class TransformDaoIT {
+public class ObservationDaoIT {
+
+	@Autowired
+	private ObservationDao observationDao;
 
 	@Autowired
 	private TransformDao transformDao;
-	private RequestObject request = new RequestObject();
-
-	private static final String tsUniqueId = "17f83e62b06e4dc29e78d96b4426a255";
+	private RequestObject timeSeriesUniqueId = new RequestObject();
 
 	@Test
-	public void testGet() {
+	public void testInsert() {
 
 		// get new data, return unique ids
-		request.setUniqueId(tsUniqueId);
-		List<Map<String, Object>> actualData = transformDao.getTimeSeries(request.getUniqueId());
+		timeSeriesUniqueId.setUniqueId("someTimeSeriesUniqueIdFromTestData");
+		List<Map<String, Object>> actualData = transformDao.getTimeSeries(timeSeriesUniqueId.getUniqueId());
+		assertNotNull(actualData);
+		System.out.println(actualData);
+	}
+
+	@Test
+	public void testDelete() {
+
+		// get new data, return unique ids
+		timeSeriesUniqueId.setUniqueId("someTimeSeriesUniqueIdFromTestData");
+		List<Map<String, Object>> actualData = transformDao.getTimeSeries(timeSeriesUniqueId.getUniqueId());
 		assertNotNull(actualData);
 		System.out.println(actualData);
 	}

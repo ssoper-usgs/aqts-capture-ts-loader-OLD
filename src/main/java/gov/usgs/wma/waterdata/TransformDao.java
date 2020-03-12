@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -25,11 +26,11 @@ public class TransformDao {
 	@Value("classpath:sql/getTimeSeries.sql")
 	protected Resource selectQuery;
 
-	public Map<String, Object> getTimeSeries(String timeSeriesUniqueId) {
-		Map<String, Object> rtn = null;
+	public List<Map<String, Object>> getTimeSeries(String timeSeriesUniqueId) {
+		List<Map<String, Object>> rtn = null;
 		try {
 			String sql = new String(FileCopyUtils.copyToByteArray(selectQuery.getInputStream()));
-			rtn = jdbcTemplate.queryForMap(
+			rtn = jdbcTemplate.queryForList(
 					sql,
 					timeSeriesUniqueId
 			);
