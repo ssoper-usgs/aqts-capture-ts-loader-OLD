@@ -70,24 +70,20 @@ public class DBTestConfig {
 		return dbUnitDbConfig;
 	}
 
-	// TRANSFORM
 	@Bean
 	public DatabaseDataSourceConnectionFactoryBean transform() throws SQLException {
 		DatabaseDataSourceConnectionFactoryBean dbUnitDatabaseConnection = new DatabaseDataSourceConnectionFactoryBean();
 		dbUnitDatabaseConnection.setDatabaseConfig(dbUnitDatabaseConfig());
 		dbUnitDatabaseConnection.setDataSource(dataSourceTransform());
-		// TODO Pull this in from the config file
 		dbUnitDatabaseConnection.setSchema(transformSchemaName);
 		return dbUnitDatabaseConnection;
 	}
 
-	// OBSERVATION
 	@Bean
 	public DatabaseDataSourceConnectionFactoryBean observation() throws SQLException {
 		DatabaseDataSourceConnectionFactoryBean dbUnitDatabaseConnection = new DatabaseDataSourceConnectionFactoryBean();
 		dbUnitDatabaseConnection.setDatabaseConfig(dbUnitDatabaseConfig());
 		dbUnitDatabaseConnection.setDataSource(dataSourceObservation());
-		// TODO Pull this in from the config file
 		dbUnitDatabaseConnection.setSchema(observationSchemaName);
 		return dbUnitDatabaseConnection;
 	}

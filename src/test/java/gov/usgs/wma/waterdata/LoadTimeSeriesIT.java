@@ -72,7 +72,6 @@ public class LoadTimeSeriesIT {
 		request.setUniqueId(tsUniqueId);
 	}
 
-	// TODO this is failing, password auth fails for user "schema_owner"
 	@Test
 	@DatabaseSetup(
 			connection="transform",

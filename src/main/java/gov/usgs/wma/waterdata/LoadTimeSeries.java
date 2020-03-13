@@ -33,19 +33,27 @@ public class LoadTimeSeries implements Function<RequestObject, ResultObject> {
 		ResultObject result = new ResultObject();
 
 		if (null != timeSeriesUniqueId) {
-			// 1. select the time series from the transform db
+
+			// select the time series from the transform db
 			List<TimeSeries> timeSeries = transformDao.getTimeSeries(timeSeriesUniqueId);
-			// in the same transaction:
-			// 2. delete the time series in the observation db
+
+			// delete the existing time series, if any, from the observation db
 			observationDao.deleteTimeSeries(timeSeriesUniqueId);
-			// 3. insert the time series in the observation db
+
 			Integer count = 0;
 			for (TimeSeries ts : timeSeries) {
+				// insert the time series into the observation db
 				count += observationDao.insertTimeSeries(ts);
 			}
 			result.setCount(count);
 
-			LOG.debug("Successfully inserted time series with unique id: {} ", timeSeriesUniqueId);
+			if (count == timeSeries.size()) {
+				result.setStatus("success");
+				LOG.debug("Successfully inserted time series with unique id: {} ", timeSeriesUniqueId);
+			} else {
+				result.setStatus("fail");
+				LOG.debug("Selected row count: {} and inserted row count: {} differ.", timeSeries.size(), count);
+			}
 		}
 		return result;
 	}
