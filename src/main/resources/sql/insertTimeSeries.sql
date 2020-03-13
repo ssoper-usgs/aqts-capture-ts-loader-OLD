@@ -3,11 +3,11 @@ insert into
 (
 	groundwater_daily_value_identifier
 	,time_series_unique_id
-	,montitoring_location_id
+	,monitoring_location_id
 	,monitoring_location_identifier
-	,observed_property_id -- parm_cd in parm table
-	,observed_property_name -- parm_nm in parm table
-	,observed_property_reference
+	,observered_property_id -- parm_cd in parm table
+	,observered_property_name -- parm_nm in parm table
+	,observered_property_reference
 	,statistic_id
 	,statistic
 	,statistic_reference
@@ -38,7 +38,7 @@ values (
 	,NULL
 	,?
 	,NULL
-	,?
-	,?
-	,?
+	,?::jsonb
+	,?::jsonb
+	,?::jsonb
 )

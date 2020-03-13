@@ -7,6 +7,7 @@
 
 
     <properties>
+        <java.version>11</java.version>
         <revision>0-DEFAULT</revision>
         <wma.maven.url>https://cida.usgs.gov/artifactory</wma.maven.url>
         <aws-lambda-events.version>2.2.7</aws-lambda-events.version>
@@ -80,6 +81,11 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-function-adapter-aws</artifactId>
             <version>${spring-cloud-function.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.amazonaws</groupId>
@@ -192,17 +198,17 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
                     <environmentVariables>
-                        <TRANSFORM_DATABASE_ADDRESS>${TESTING_DATABASE_ADDRESS}</TRANSFORM_DATABASE_ADDRESS>
-                        <TRANSFORM_DATABASE_PORT>${TESTING_DATABASE_PORT}</TRANSFORM_DATABASE_PORT>
+                        <TRANSFORM_DATABASE_ADDRESS>${TRANSFORM_TESTING_DATABASE_ADDRESS}</TRANSFORM_DATABASE_ADDRESS>
+                        <TRANSFORM_DATABASE_PORT>${TRANSFORM_TESTING_DATABASE_PORT}</TRANSFORM_DATABASE_PORT>
                         <TRANSFORM_DATABASE_NAME>database_name</TRANSFORM_DATABASE_NAME>
                         <TRANSFORM_SCHEMA_NAME>schema_name</TRANSFORM_SCHEMA_NAME>
                         <TRANSFORM_SCHEMA_OWNER_USERNAME>schema_owner</TRANSFORM_SCHEMA_OWNER_USERNAME>
                         <TRANSFORM_SCHEMA_OWNER_PASSWORD>changeMe</TRANSFORM_SCHEMA_OWNER_PASSWORD>
-                        <OBSERVATION_DATABASE_ADDRESS>${TESTING_DATABASE_ADDRESS}</OBSERVATION_DATABASE_ADDRESS>
-                        <OBSERVATION_DATABASE_PORT>${TESTING_DATABASE_PORT}</OBSERVATION_DATABASE_PORT>
-                        <OBSERVATION_DATABASE_NAME>database_name</OBSERVATION_DATABASE_NAME>
-                        <OBSERVATION_SCHEMA_NAME>schema_name</OBSERVATION_SCHEMA_NAME>
-                        <OBSERVATION_SCHEMA_OWNER_USERNAME>schema_owner</OBSERVATION_SCHEMA_OWNER_USERNAME>
+                        <OBSERVATION_DATABASE_ADDRESS>${OBSERVATION_TESTING_DATABASE_ADDRESS}</OBSERVATION_DATABASE_ADDRESS>
+                        <OBSERVATION_DATABASE_PORT>${OBSERVATION_TESTING_DATABASE_PORT}</OBSERVATION_DATABASE_PORT>
+                        <OBSERVATION_DATABASE_NAME>wqp_db</OBSERVATION_DATABASE_NAME>
+                        <OBSERVATION_SCHEMA_NAME>nwis</OBSERVATION_SCHEMA_NAME>
+                        <OBSERVATION_SCHEMA_OWNER_USERNAME>nwis_ws_star</OBSERVATION_SCHEMA_OWNER_USERNAME>
                         <OBSERVATION_SCHEMA_OWNER_PASSWORD>changeMe</OBSERVATION_SCHEMA_OWNER_PASSWORD>
                     </environmentVariables>
                 </configuration>

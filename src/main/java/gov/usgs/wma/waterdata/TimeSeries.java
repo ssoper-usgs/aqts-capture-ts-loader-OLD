@@ -1,8 +1,8 @@
 package gov.usgs.wma.waterdata;
 
-import org.postgresql.util.PGobject;
 
 import java.sql.Date;
+import java.util.Objects;
 
 
 public class TimeSeries {
@@ -14,9 +14,9 @@ public class TimeSeries {
 	Date timeStep;
 	String unitOfMeasure;
 	String result;
-	PGobject approvals;
-	PGobject qualifiers;
-	PGobject grades;
+	String approvals;
+	String qualifiers;
+	String grades;
 
 	public String getGroundwaterDailyValueIdentifier() {
 		return groundwaterDailyValueIdentifier;
@@ -82,27 +82,62 @@ public class TimeSeries {
 		this.result = result;
 	}
 
-	public PGobject getApprovals() {
+	public String getApprovals() {
 		return approvals;
 	}
 
-	public void setApprovals(PGobject approvals) {
+	public void setApprovals(String approvals) {
 		this.approvals = approvals;
 	}
 
-	public PGobject getQualifiers() {
+	public String getQualifiers() {
 		return qualifiers;
 	}
 
-	public void setQualifiers(PGobject qualifiers) {
+	public void setQualifiers(String qualifiers) {
 		this.qualifiers = qualifiers;
 	}
 
-	public PGobject getGrades() {
+	public String getGrades() {
 		return grades;
 	}
 
-	public void setGrades(PGobject grades) {
+	public void setGrades(String grades) {
 		this.grades = grades;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		TimeSeries that = (TimeSeries) o;
+		return Objects.equals(groundwaterDailyValueIdentifier, that.groundwaterDailyValueIdentifier) &&
+				Objects.equals(timeSeriesUniqueId, that.timeSeriesUniqueId) &&
+				Objects.equals(monitoringLocationIdentifier, that.monitoringLocationIdentifier) &&
+				Objects.equals(observedPropertyId, that.observedPropertyId) &&
+				Objects.equals(statisticId, that.statisticId) &&
+				Objects.equals(timeStep, that.timeStep) &&
+				Objects.equals(unitOfMeasure, that.unitOfMeasure) &&
+				Objects.equals(result, that.result) &&
+				Objects.equals(approvals, that.approvals) &&
+				Objects.equals(qualifiers, that.qualifiers) &&
+				Objects.equals(grades, that.grades);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(
+				groundwaterDailyValueIdentifier,
+				timeSeriesUniqueId,
+				monitoringLocationIdentifier,
+				observedPropertyId,
+				statisticId,
+				timeStep,
+				unitOfMeasure,
+				result,
+				approvals,
+				qualifiers,
+				grades
+		);
 	}
 }

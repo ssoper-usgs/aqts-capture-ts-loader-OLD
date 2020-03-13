@@ -56,7 +56,6 @@ public class DBTestConfig {
 		return new JdbcTemplate(dataSourceObservation());
 	}
 
-	//
 	@Bean
 	public DatabaseConfigBean dbUnitDatabaseConfig() {
 		DatabaseConfigBean dbUnitDbConfig = new DatabaseConfigBean();
@@ -64,6 +63,7 @@ public class DBTestConfig {
 		return dbUnitDbConfig;
 	}
 
+	// TRANSFORM
 	@Bean
 	public DatabaseDataSourceConnectionFactoryBean transform() throws SQLException {
 		DatabaseDataSourceConnectionFactoryBean dbUnitDatabaseConnection = new DatabaseDataSourceConnectionFactoryBean();
@@ -74,6 +74,7 @@ public class DBTestConfig {
 		return dbUnitDatabaseConnection;
 	}
 
+	// OBSERVATION
 	@Bean
 	public DatabaseDataSourceConnectionFactoryBean observation() throws SQLException {
 		DatabaseDataSourceConnectionFactoryBean dbUnitDatabaseConnection = new DatabaseDataSourceConnectionFactoryBean();

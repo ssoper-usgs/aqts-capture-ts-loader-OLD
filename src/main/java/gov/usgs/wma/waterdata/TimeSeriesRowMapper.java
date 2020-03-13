@@ -12,16 +12,16 @@ public class TimeSeriesRowMapper implements RowMapper<TimeSeries> {
 		TimeSeries timeSeries = new TimeSeries();
 
 		timeSeries.setGroundwaterDailyValueIdentifier(rs.getString("groundwater_daily_value_identifier"));
-		timeSeries.setGroundwaterDailyValueIdentifier(rs.getString("time_series_unique_id"));
-		timeSeries.setGroundwaterDailyValueIdentifier(rs.getString("monitoring_location_identifier"));
-		timeSeries.setGroundwaterDailyValueIdentifier(rs.getString("observered_property_id"));
-		timeSeries.setGroundwaterDailyValueIdentifier(rs.getString("statistic_id"));
-		timeSeries.setGroundwaterDailyValueIdentifier(rs.getString("time_step"));
-		timeSeries.setGroundwaterDailyValueIdentifier(rs.getString("unit_of_measure"));
-		timeSeries.setGroundwaterDailyValueIdentifier(rs.getString("result"));
-		timeSeries.setGroundwaterDailyValueIdentifier(rs.getString("approvals"));
-		timeSeries.setGroundwaterDailyValueIdentifier(rs.getString("qualifiers"));
-		timeSeries.setGroundwaterDailyValueIdentifier(rs.getString("grades"));
+		timeSeries.setTimeSeriesUniqueId(rs.getString("time_series_unique_id"));
+		timeSeries.setMonitoringLocationIdentifier(rs.getString("monitoring_location_identifier"));
+		timeSeries.setObservedPropertyId(rs.getString("observered_property_id"));
+		timeSeries.setStatisticId(rs.getString("statistic_id"));
+		timeSeries.setTimeStep(rs.getDate("time_step"));
+		timeSeries.setUnitOfMeasure(rs.getString("unit_of_measure"));
+		timeSeries.setResult(rs.getString("result"));
+		timeSeries.setApprovals(rs.getString("approvals"));
+		timeSeries.setQualifiers(rs.getString("qualifiers"));
+		timeSeries.setGrades(rs.getString("grades"));
 
 		return timeSeries;
 	}

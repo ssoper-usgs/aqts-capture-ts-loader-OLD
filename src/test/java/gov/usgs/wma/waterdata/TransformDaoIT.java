@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,80 +67,79 @@ public class TransformDaoIT {
 	public void setup() {
 		request = new RequestObject();
 		request.setUniqueId(tsUniqueId);
-		PGobject approvals;
-		{
-			approvals = new PGobject();
-			approvals.setType("jsonb");
+//		Object approvals;
+//		{
+			String approvals = "[\"Approved\"]";
+//			approvals.setType("jsonb");
 //			approvals.setValue("[\"Approved\"]");
-		}
-		PGobject grades;
-		{
-			grades = new PGobject();
-			grades.setType("jsonb");
+//		}
+//		Object grades;
+//		{
+			String grades = "[\"50\"]";
+//			grades.setType("jsonb");
 //			grades.setValue("[\"50\"]");
-		}
+//		}
 		
-		PGobject qualifiers;
-		{
-			qualifiers = new PGobject();
-			qualifiers.setType("jsonb");
+//		Object qualifiers;
+//		{
+			String qualifiers = null;
+//			qualifiers.setType("jsonb");
 //			qualifiers.setValue("NULL");
-		}
+//		}
 
-//		TimeSeries timeSeries1 = new TimeSeries();
-//		timeSeries1.setGroundwaterDailyValueIdentifier("USGS-132624144452771-17f83e62b06e4dc29e78d96b4426a255");
-//		timeSeries1.setTimeSeriesUniqueId("17f83e62b06e4dc29e78d96b4426a255");
-//		timeSeries1.setMonitoringLocationIdentifier("USGS-132624144452771");
-//		timeSeries1.setObservedPropertyId("62610");
-//		timeSeries1.setStatisticId("00001");
-//		timeSeries1.setTimeStep(Date.parse("2008-06-03"));
-//		timeSeries1.setUnitOfMeasure("ft");
-//		timeSeries1.setResult("36.02");
-//		timeSeries1.setApprovals(approvals);
-//		timeSeries1.setQualifiers(qualifiers);
-//		timeSeries1.setGrades(grades);
-//
-//		TimeSeries timeSeries2 = new TimeSeries();
-//		timeSeries2.setGroundwaterDailyValueIdentifier("USGS-132624144452771-17f83e62b06e4dc29e78d96b4426a255");
-//		timeSeries2.setTimeSeriesUniqueId("17f83e62b06e4dc29e78d96b4426a255");
-//		timeSeries2.setMonitoringLocationIdentifier("USGS-132624144452771");
-//		timeSeries2.setObservedPropertyId("62610");
-//		timeSeries2.setStatisticId("00001");
-//		timeSeries2.setTimeStep(Date.parse("2008-06-04"));
-//		timeSeries2.setUnitOfMeasure("ft");
-//		timeSeries2.setResult("35.96");
-//		timeSeries2.setApprovals(approvals);
-//		timeSeries2.setQualifiers(qualifiers);
-//		timeSeries2.setGrades(grades);
-//
-//		TimeSeries timeSeries3 = new TimeSeries();
-//		timeSeries3.setGroundwaterDailyValueIdentifier("USGS-132624144452771-17f83e62b06e4dc29e78d96b4426a255");
-//		timeSeries3.setTimeSeriesUniqueId("17f83e62b06e4dc29e78d96b4426a255");
-//		timeSeries3.setMonitoringLocationIdentifier("USGS-132624144452771");
-//		timeSeries3.setObservedPropertyId("62610");
-//		timeSeries3.setStatisticId("00001");
-//		timeSeries3.setTimeStep(Date.parse("2008-06-04"));
-//		timeSeries3.setUnitOfMeasure("ft");
-//		timeSeries3.setResult("35.96");
-//		timeSeries3.setApprovals(approvals);
-//		timeSeries3.setQualifiers(qualifiers);
-//		timeSeries3.setGrades(grades);
-//
-//		timeSeriesList = new ArrayList<>();
-//
-//		timeSeriesList.add(timeSeries1);
-//		timeSeriesList.add(timeSeries2);
-//		timeSeriesList.add(timeSeries3);
+		TimeSeries timeSeries1 = new TimeSeries();
+		timeSeries1.setGroundwaterDailyValueIdentifier("USGS-132624144452771-17f83e62b06e4dc29e78d96b4426a255");
+		timeSeries1.setTimeSeriesUniqueId("17f83e62b06e4dc29e78d96b4426a255");
+		timeSeries1.setMonitoringLocationIdentifier("USGS-132624144452771");
+		timeSeries1.setObservedPropertyId("62610");
+		timeSeries1.setStatisticId("00001");
+		timeSeries1.setTimeStep(Date.valueOf("2008-06-03"));
+		timeSeries1.setUnitOfMeasure("ft");
+		timeSeries1.setResult("36.02");
+		timeSeries1.setApprovals(approvals);
+		timeSeries1.setQualifiers(qualifiers);
+		timeSeries1.setGrades(grades);
+
+		TimeSeries timeSeries2 = new TimeSeries();
+		timeSeries2.setGroundwaterDailyValueIdentifier("USGS-132624144452771-17f83e62b06e4dc29e78d96b4426a255");
+		timeSeries2.setTimeSeriesUniqueId("17f83e62b06e4dc29e78d96b4426a255");
+		timeSeries2.setMonitoringLocationIdentifier("USGS-132624144452771");
+		timeSeries2.setObservedPropertyId("62610");
+		timeSeries2.setStatisticId("00001");
+		timeSeries2.setTimeStep(Date.valueOf("2008-06-04"));
+		timeSeries2.setUnitOfMeasure("ft");
+		timeSeries2.setResult("35.96");
+		timeSeries2.setApprovals(approvals);
+		timeSeries2.setQualifiers(qualifiers);
+		timeSeries2.setGrades(grades);
+
+		TimeSeries timeSeries3 = new TimeSeries();
+		timeSeries3.setGroundwaterDailyValueIdentifier("USGS-132624144452771-17f83e62b06e4dc29e78d96b4426a255");
+		timeSeries3.setTimeSeriesUniqueId("17f83e62b06e4dc29e78d96b4426a255");
+		timeSeries3.setMonitoringLocationIdentifier("USGS-132624144452771");
+		timeSeries3.setObservedPropertyId("62610");
+		timeSeries3.setStatisticId("00001");
+		timeSeries3.setTimeStep(Date.valueOf("2008-06-05"));
+		timeSeries3.setUnitOfMeasure("ft");
+		timeSeries3.setResult("35.91");
+		timeSeries3.setApprovals(approvals);
+		timeSeries3.setQualifiers(qualifiers);
+		timeSeries3.setGrades(grades);
+
+		timeSeriesList = new ArrayList<>();
+
+		timeSeriesList.add(timeSeries1);
+		timeSeriesList.add(timeSeries2);
+		timeSeriesList.add(timeSeries3);
 	}
 
 	@Test
 	public void testGet() {
 
 		// get new data, return unique ids
-		System.out.println(request.getUniqueId());
 		List<TimeSeries> actualData = transformDao.getTimeSeries(request.getUniqueId());
 		assertNotNull(actualData);
-		assertEquals(actualData, timeSeriesList);
+		assertEquals(timeSeriesList, actualData);
 	}
 
 

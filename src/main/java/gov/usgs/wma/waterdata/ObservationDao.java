@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
@@ -54,18 +55,18 @@ public class ObservationDao {
 					new PreparedStatementSetter() {
 						@Override
 						public void setValues(PreparedStatement ps) throws SQLException {
-							int pos = 1;
-							ps.setString(pos++, timeSeries.getGroundwaterDailyValueIdentifier());
-							ps.setString(pos++, timeSeries.getTimeSeriesUniqueId());
-							ps.setString(pos++, timeSeries.getMonitoringLocationIdentifier());
-							ps.setString(pos++, timeSeries.getObservedPropertyId());
-							ps.setString(pos++, timeSeries.getStatisticId());
-							ps.setDate(pos++, timeSeries.getTimeStep());
-							ps.setString(pos++, timeSeries.getUnitOfMeasure());
-							ps.setString(pos++, timeSeries.getResult());
-							ps.setObject(pos++, timeSeries.getApprovals());
-							ps.setObject(pos++, timeSeries.getQualifiers());
-							ps.setObject(pos++, timeSeries.getGrades());
+//							int pos = 1;
+							ps.setString(1, timeSeries.getGroundwaterDailyValueIdentifier());
+							ps.setString(2, timeSeries.getTimeSeriesUniqueId());
+							ps.setString(3, timeSeries.getMonitoringLocationIdentifier());
+							ps.setString(4, timeSeries.getObservedPropertyId());
+							ps.setString(5, timeSeries.getStatisticId());
+							ps.setDate(6, timeSeries.getTimeStep());
+							ps.setString(7, timeSeries.getUnitOfMeasure());
+							ps.setString(8, timeSeries.getResult());
+							ps.setString(9, timeSeries.getApprovals());
+							ps.setString(10, timeSeries.getQualifiers());
+							ps.setString(11, timeSeries.getGrades());
 						}
 					}
 			);

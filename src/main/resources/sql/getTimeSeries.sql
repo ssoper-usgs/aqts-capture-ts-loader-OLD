@@ -7,9 +7,9 @@ select
     time_step,
     unit_of_measure,
     result,
-    approvals,
-    qualifiers,
-    grades
+    approvals::text,
+    qualifiers::text,
+    grades::text
 from
     groundwater_statistical_daily_value
 where

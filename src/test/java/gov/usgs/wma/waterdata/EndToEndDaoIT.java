@@ -22,6 +22,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -40,6 +41,8 @@ import org.springframework.util.LinkedCaseInsensitiveMap;
 
 @SpringBootTest(webEnvironment=WebEnvironment.NONE,
 		classes={DBTestConfig.class, TransformDao.class, ObservationDao.class})
+//		classes={DBTestConfig.class, ObservationDao.class})
+
 //@DatabaseSetup("classpath:/testData/transformDb/groundwaterStatisticalDailyValue/")
 
 @ActiveProfiles("it")
@@ -49,6 +52,7 @@ import org.springframework.util.LinkedCaseInsensitiveMap;
 		TransactionDbUnitTestExecutionListener.class })
 @DbUnitConfiguration(
 		dataSetLoader=FileSensingDataSetLoader.class,
+//		databaseConnection={"observation"}
 		databaseConnection={"transform", "observation"}
 )
 @AutoConfigureTestDatabase(replace=Replace.NONE)
@@ -90,9 +94,10 @@ public class EndToEndDaoIT {
 		List<TimeSeries> getData = transformDao.getTimeSeries(request.getUniqueId());
 		assertNotNull(getData);
 
-		// delete and insert data
+		// delete the data
+		observationDao.deleteTimeSeries(request.getUniqueId());
 		for (TimeSeries ts : getData) {
-			observationDao.deleteTimeSeries(ts.getTimeSeriesUniqueId());
+			// for each time series, insert it
 			observationDao.insertTimeSeries(ts);
 		}
 	}
