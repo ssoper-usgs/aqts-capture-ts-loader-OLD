@@ -47,10 +47,12 @@ public class ObservationDao {
 	}
 
 
-	public void insertTimeSeries(TimeSeries timeSeries) {
+	public Integer insertTimeSeries(TimeSeries timeSeries) {
+		Integer rtnCount = null;
 		try {
 			String sql = new String(FileCopyUtils.copyToByteArray(insertQuery.getInputStream()));
-			jdbcTemplate.update(
+
+			rtnCount = jdbcTemplate.update(
 					sql,
 					new PreparedStatementSetter() {
 						@Override
@@ -76,5 +78,6 @@ public class ObservationDao {
 			LOG.error("Unable to get SQL statement", e);
 			throw new RuntimeException(e);
 		}
+		return rtnCount;
 	}
 }

@@ -40,7 +40,7 @@ import org.springframework.util.LinkedCaseInsensitiveMap;
 
 
 @SpringBootTest(webEnvironment=WebEnvironment.NONE,
-		classes={DBTestConfig.class, TransformDao.class, ObservationDao.class})
+		classes={DBTestConfig.class, LoadTimeSeries.class, TransformDao.class, ObservationDao.class})
 //		classes={DBTestConfig.class, ObservationDao.class})
 
 //@DatabaseSetup("classpath:/testData/transformDb/groundwaterStatisticalDailyValue/")
@@ -52,20 +52,16 @@ import org.springframework.util.LinkedCaseInsensitiveMap;
 		TransactionDbUnitTestExecutionListener.class })
 @DbUnitConfiguration(
 		dataSetLoader=FileSensingDataSetLoader.class,
-//		databaseConnection={"observation"}
 		databaseConnection={"transform", "observation"}
 )
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 @Transactional(propagation=Propagation.NOT_SUPPORTED)
 @Import({DBTestConfig.class})
 @DirtiesContext
-public class EndToEndDaoIT {
+public class LoadTimeSeriesIT {
 
 	@Autowired
-	public TransformDao transformDao;
-
-	@Autowired
-	public ObservationDao observationDao;
+	public LoadTimeSeries loadTimeSeries;
 
 	public RequestObject request;
 	public static final String tsUniqueId = "17f83e62b06e4dc29e78d96b4426a255";
@@ -88,19 +84,10 @@ public class EndToEndDaoIT {
 			value="classpath:/testResult/observationDb/groundwaterDailyValue/afterInsert/",
 			assertionMode= DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			connection="observation")
-	public void testEndToEnd() {
+	public void testLoadTimeSeries() {
 
-		// get data
-		List<TimeSeries> getData = transformDao.getTimeSeries(request.getUniqueId());
-		assertNotNull(getData);
-
-		// delete the data
-		observationDao.deleteTimeSeries(request.getUniqueId());
-		for (TimeSeries ts : getData) {
-			// for each time series, insert it
-			observationDao.insertTimeSeries(ts);
-		}
+		ResultObject actualInsert = loadTimeSeries.processRequest(request);
+		Integer expectedCount = 3;
+		assertEquals(expectedCount, actualInsert.getCount());
 	}
-
-
 }

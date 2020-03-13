@@ -19,19 +19,12 @@ public class JsonType extends AbstractDataType {
 
 	@Override
 	public Object typeCast(Object value) throws TypeCastException {
-		if (null != value) {
-			return value.toString();
-		} else {
-			return null;
-		}
+		return value.toString();
 	}
 
 	@Override
 	public Object getSqlValue(int column, ResultSet resultSet) throws SQLException {
 		LOG.trace("getSqlValue({}, {})", column, resultSet);
-		if (resultSet.wasNull()) {
-			return null;
-		}
 		return resultSet.getString(column);
 	}
 

@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -18,6 +19,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class DBTestConfig {
 
 	// Transform DB connection
+	@Value("${TRANSFORM_SCHEMA_NAME}")
+	private String transformSchemaName;
+
 	@Bean
 	@Primary
 	@ConfigurationProperties(prefix="spring.datasource-transform")
@@ -39,6 +43,9 @@ public class DBTestConfig {
 	}
 
 	// Observation DB connection
+	@Value("${OBSERVATION_SCHEMA_NAME}")
+	private String observationSchemaName;
+
 	@Bean
 	@ConfigurationProperties(prefix="spring.datasource-observation")
 	public DataSourceProperties dataSourcePropertiesObservation() {
@@ -70,7 +77,7 @@ public class DBTestConfig {
 		dbUnitDatabaseConnection.setDatabaseConfig(dbUnitDatabaseConfig());
 		dbUnitDatabaseConnection.setDataSource(dataSourceTransform());
 		// TODO Pull this in from the config file
-		dbUnitDatabaseConnection.setSchema("schema_name");
+		dbUnitDatabaseConnection.setSchema(transformSchemaName);
 		return dbUnitDatabaseConnection;
 	}
 
@@ -81,7 +88,7 @@ public class DBTestConfig {
 		dbUnitDatabaseConnection.setDatabaseConfig(dbUnitDatabaseConfig());
 		dbUnitDatabaseConnection.setDataSource(dataSourceObservation());
 		// TODO Pull this in from the config file
-		dbUnitDatabaseConnection.setSchema("nwis");
+		dbUnitDatabaseConnection.setSchema(observationSchemaName);
 		return dbUnitDatabaseConnection;
 	}
 }
